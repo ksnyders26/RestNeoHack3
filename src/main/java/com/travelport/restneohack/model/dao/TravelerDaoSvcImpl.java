@@ -80,13 +80,8 @@ public class TravelerDaoSvcImpl {
     }
                 
     public Traveler createTraveler(Traveler traveler){
-        //return travelerRepository.save(new Traveler(firstName, lastName, emailAddress));
-        System.out.println("Traveler = " + traveler.toString());
-        String firstName=traveler.getFirstName();
-        String lastName = traveler.getLastName();
-        String emailAddress = traveler.getEmailAddress();
-    //    return worldRepository.save(new World(name, moons));
-        return travelerRepository.save(new Traveler(firstName, lastName, emailAddress));
+      
+        return travelerRepository.save(traveler);
                 //return travelerRepository.save(traveler);
 
     }

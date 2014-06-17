@@ -102,7 +102,23 @@ public class CRUDServiceController {
         Long idLong = Long.valueOf(id);
         return mapTraveler(trvDaoImpl.findTravelerById(idLong));
     }
+    
+    @RequestMapping(value = "/retrieveTraveler/{email}", method = RequestMethod.GET, produces = APPLICATION_JSON)
+    @ResponseStatus(value = HttpStatus.ACCEPTED)
+    @ResponseBody
+    public TravelerJSON retrieveTravelerByEmail(@PathVariable(value = "email") String email) throws Throwable {
+       
+        return mapTraveler(trvDaoImpl.findByEmailAddress(email));
+    }
 
+    @RequestMapping(value = "/createTravelers/", method = RequestMethod.GET, produces = APPLICATION_JSON)
+    @ResponseStatus(value = HttpStatus.ACCEPTED)
+    @ResponseBody
+    public void createTravelers() throws Throwable {
+       
+        trvDaoImpl.makeSomeTravelers();
+    }
+    
     private TravelerJSON mapTraveler(Traveler traveler) {
 
         TravelerJSON trv = new TravelerJSON();
