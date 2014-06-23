@@ -16,7 +16,7 @@
 
 	<context:spring-configured/>
     <context:annotation-config/>
-    <context:component-scan base-package="com.travelport.restneohack.model.dao" />
+    <context:component-scan base-package="com.travelport.restneohack" />
 
     <bean id="typeRepresentationStrategyFactory" class="org.springframework.data.neo4j.support.typerepresentation.TypeRepresentationStrategyFactory">
         <constructor-arg ref="graphDatabase"/>
@@ -24,7 +24,7 @@
     </bean>
 
     <neo4j:config storeDirectory="target/neo4j-db-plain-subref"
-                  base-package="com.travelport.restneohack.model.domain"/>
+                  base-package="com.travelport.restneohack"/>
     <neo4j:repositories base-package="com.travelport.restneohack.model.repositories"/>
 
 </beans>
