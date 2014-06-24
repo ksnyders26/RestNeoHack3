@@ -7,7 +7,7 @@ import org.springframework.data.neo4j.annotation.RelationshipEntity;
 import org.springframework.data.neo4j.annotation.StartNode;
 import org.springframework.util.Assert;
 
-@RelationshipEntity(type = "FOPS")
+@RelationshipEntity(type = "PAYMENT_TYPE")
 public class PaymentType {
 
     @GraphId
@@ -20,19 +20,13 @@ public class PaymentType {
     @EndNode
     private FormOfPayment formOfPayment;
 
-    private int amount;
 
     public PaymentType(AccountView accountView, FormOfPayment formOfPayment) {
-    	this(accountView,formOfPayment, 1);
-    }
-
-    public PaymentType(AccountView accountView, FormOfPayment formOfPayment, int amount) {
     Assert.notNull(formOfPayment);
     Assert.notNull(accountView);
 
     this.accountView = accountView;
 	this.formOfPayment = formOfPayment;
-	this.amount = amount;
     }
 
     public PaymentType() {
@@ -51,7 +45,5 @@ public class PaymentType {
         return accountView;
     }
 
-    public int getAmount() {
-	return amount;
-    }
+
 }

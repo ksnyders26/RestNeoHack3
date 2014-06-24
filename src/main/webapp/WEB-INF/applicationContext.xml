@@ -23,7 +23,7 @@
     <context:annotation-config/>
    
 
-    <neo4j:config storeDirectory="target/neo4j-db-plain"
+    <neo4j:config storeDirectory="/Applications/neo4j-community-2.1.1/data/graph2.db"
                   base-package="com.travelport.restneohack"/>
     <neo4j:repositories base-package="com.travelport.restneohack.model.repositories"/>
 

@@ -77,7 +77,14 @@ public class CRUDServiceController {
           if (trv.getStreet() != null) {
             String street = trv.getStreet();
             String city = trv.getCity();
-            Country country = new Country("US", "United Stats of America");
+            String countryStr = trv.getCountry();
+            Country country = null;
+            if ((countryStr!= null) && (countryStr.equals("SP"))) {
+                country = new Country("SP", "Spain");
+            }
+            else {
+                country = new Country("US", "United Stats of America");
+            }
             Address addr = new Address(street, city, country);
             traveler.addAddress(addr);
         }
@@ -125,10 +132,10 @@ public class CRUDServiceController {
 
                     trv.setStreet(travelerAddress.getStreet());
                     trv.setCity(travelerAddress.getCity());
-//                    if (travelerAddress.getCountry() != null){
-//                        Country country = travelerAddress.getCountry();
-//                        trv.setCountry(country.name);
-//                    }
+                    if (travelerAddress.getCountry() != null){
+                        Country country = travelerAddress.getCountry();
+                        trv.setCountry(country.getName());
+                    }
                     
                 }
                 

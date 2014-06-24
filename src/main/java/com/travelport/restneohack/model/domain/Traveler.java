@@ -25,7 +25,7 @@ public class Traveler {
 	private String emailAddress;
         
         @Fetch
-	@RelatedTo(elementClass = Address.class, type = HAS_ADDRESS)//require direction type here to address
+	@RelatedTo(elementClass = Address.class, type = HAS_ADDRESS)
 	private Set<Address> addresses = new HashSet<Address>();
        // private Set<Address> addresses = new HashSet<Address>();
 

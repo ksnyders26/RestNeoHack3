@@ -74,7 +74,7 @@ public class TravelerDaoSvcImpl {
 	}
     
     
-    public void persistTravelertoDb(Traveler traveler, Set<Address> addresses, FormOfPayment FOP) {
+    public void persistTravelertoDb(Traveler traveler, Set<Address> addresses, FormOfPayment fop) {
         
         
         Traveler persistTraveler = new Traveler();
@@ -88,10 +88,11 @@ public class TravelerDaoSvcImpl {
      //   System.out.println("traveler addresses = " + persistTraveler.getAddresses().);
         persistTraveler = template.save(traveler);
         
-        template.save(FOP);
+        template.save(fop);
         
         AccountView accountView = new AccountView(persistTraveler);
-        accountView.add(FOP,2);
+        //accountView.setName(null);
+        accountView.add(fop);
         
         Iterator iter = addresses.iterator();
         Object address = iter.next();

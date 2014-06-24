@@ -32,7 +32,7 @@ public interface FormOfPaymentRepository extends GraphRepository<FormOfPayment>,
     
     //Query has not been constructed to work with current project
     @Query("START cust=node({0}) " +
-           " MATCH cust-[r1:RATED]->formOfPayment<-[r2:RATED]-similar-[:ORDERED]->accountView-[:FOPS]->suggestion " +
+           " MATCH cust-[r1:RATED]->formOfPayment<-[r2:RATED]-similar-[:ORDERED]->accountView-[:PAYMENT_TYPE]->suggestion " +
            " where abs(r1.stars - r2.stars) <= 2 "+
            " RETURN suggestion, count(*) as score" +
            " ORDER BY score DESC")

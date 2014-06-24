@@ -15,69 +15,66 @@ import org.springframework.data.neo4j.support.index.IndexType;
 
 @NodeEntity
 public class FormOfPayment {
-    
+
     @GraphId
-        private Long id;
+    private Long id;
     @Indexed(unique = true)
-	private String name;
-    @Indexed(indexType = IndexType.FULLTEXT,indexName = "formOfPayment_search")
-	private String description;
+    private String name;
+    @Indexed(indexType = IndexType.FULLTEXT, indexName = "formOfPayment_search")
+    private String description;
     @GraphProperty(propertyType = double.class)
-	private BigDecimal price;
-
+    private BigDecimal price;
     @RelatedTo
-	private Set<Tag> tags = new HashSet<Tag> ();
+    private Set<Tag> tags = new HashSet<Tag>();
+    private DynamicProperties attributes = new PrefixedDynamicProperties("attributes");
 
-    private DynamicProperties attributes=new PrefixedDynamicProperties("attributes");
+    public FormOfPayment(String name) {
+        this(name, null);
+    }
 
-	public FormOfPayment(String name) {
-		this(name, null);
-	}
+    public FormOfPayment(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 
-	public FormOfPayment(String name, String description) {
-		this.name = name;
-		this.description = description;
-	}
+    public FormOfPayment() {
+    }
 
-	public FormOfPayment() {
+    public void setAttribute(String key, String value) {
+        this.attributes.setProperty(key, value);
+    }
 
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setAttribute(String key, String value) {
-            this.attributes.setProperty(key, value);
-	}
-        
-        public Long getId() {
-            return id;
-        }
+    public String getFoPName() {
+        return name;
+    }
 
-	public String getFoPName() {
-            return name;
-	}
+    public String getFoPDescription() {
+        return description;
+    }
 
-	public String getFoPDescription() {
-            return description;
-	}
+    public Set<Tag> getTags() {
+        return Collections.unmodifiableSet(tags);
+    }
 
-	public Set<Tag> getTags() {
-            return Collections.unmodifiableSet(tags);
-	}
+    public DynamicProperties getAttributes() {
+        return attributes;
+    }
 
-        public DynamicProperties getAttributes() {
-            return attributes;
-	}
+    public BigDecimal getPrice() {
+        return price;
+    }
 
-	public BigDecimal getPrice() {
-            return price;
-	}
+    public FormOfPayment withPrice(BigDecimal price) {
+        this.price = price;
+        return this;
+    }
 
-        public FormOfPayment withPrice(BigDecimal price) {
-            this.price = price;
-            return this;
-        }
-
-        @Override
-        public String toString() {
-            return name;
-        }
+    @Override
+    public String toString() {
+        return name;
+    }
 }

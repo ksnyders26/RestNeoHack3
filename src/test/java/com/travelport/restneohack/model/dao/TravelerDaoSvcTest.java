@@ -10,9 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.travelport.restneohack.model.domain.Address;
 import com.travelport.restneohack.model.domain.Country;
 import com.travelport.restneohack.model.domain.EmailAddress;
+import com.travelport.restneohack.model.domain.FormOfPayment;
 import com.travelport.restneohack.model.domain.Traveler;
 import com.travelport.restneohack.model.repositories.TravelerRepository;
 import java.util.Collection;
+import java.util.HashSet;
 import org.springframework.data.neo4j.support.Neo4jTemplate;
 import org.springframework.data.neo4j.support.node.Neo4jHelper;
 import org.springframework.test.annotation.Rollback;
@@ -42,36 +44,6 @@ public class TravelerDaoSvcTest {
         makeSomeTravelers();
     }
 
-    /*	@Test
-    public void savesTravelerCorrectly(){
-    //       TravelerDaoSpringDataImpl impl = new TravelerDaoSpringDataImpl();
-    EmailAddress email = new EmailAddress("HanSolo@travelport.com");
-    Traveler hanSolo = new Traveler("Han", "Solo", email.getEmail());
-
-    Country usa=new Country("US","United States");
-    hanSolo.addAddress(new Address("27 Broadway", "New York", usa));
-    //Traveler result = repository.save(hanSolo);
-    Traveler result = dataImpl.createTraveler(hanSolo);
-    result.toString();
-
-
-    //          assertThat(result.getId(), is(notNullValue()));
-    assertNotNull(result.getId());
-
-
-    Traveler hanny = dataImpl.findByEmailAddress(email.getEmail());
-    System.out.println("Traveler email @ dataImpl = " + hanny.getEmailAddress());
-    Traveler travelerByAddress = dataImpl.findByEmailAddress(email.getEmail());
-    System.out.println("Traveler email @ dataImpl = " + hanSolo.getEmailAddress());
-    System.out.println("Traveler = " + hanSolo.toString());
-    //    assertThat(result2, is(hanSolo));
-    }*/
-    @Test
-    public void shouldHaveCorrectNumberOfTravelers() {
-        // make sure we created our test data
-        assertEquals(4, dataImpl.getNumberOfTravelers());
-    }
-
     @Test
     public void shouldFindTravelersById() {
        // dataImpl.makeSomeTravelers();
@@ -99,7 +71,7 @@ public class TravelerDaoSvcTest {
     }
 
 //    @Test
-//    public void persistTravelertoDd() {
+//    public void persistTravelertoDb() {
 //        Set<Address> addresses = new HashSet<>();
 //
 //        Traveler hanSolo = new Traveler("Han", "Solo", "hanSolo@Rebels.com");
@@ -110,7 +82,7 @@ public class TravelerDaoSvcTest {
 //        addresses.add(shippingAddress);
 //        FormOfPayment fop = new FormOfPayment("Visa", "5526-5584-8856-9985");
 //
-//        dataImpl.persistTravelertoDd(hanSolo, addresses, fop);
+//        dataImpl.persistTravelertoDb(hanSolo, addresses, fop);
 //
 //        Traveler foundTraveler = dataImpl.findByEmailAddress("hanSolo@Rebels.com");
 //
@@ -119,40 +91,97 @@ public class TravelerDaoSvcTest {
 //
 //    }
     
-        public Collection<Traveler> makeSomeTravelers(){
-        Collection<Traveler> travelers = new ArrayList<Traveler>();
-        Country usa = new Country ("US", "United Stats of America");
-        Country China = new Country ("CH", "China");
+        public void makeSomeTravelers(){
+        Set<Address> addresses = new HashSet<>();
+            Country usa = new Country ("US","United States of America");
+            Country russia = new Country ("RU","Russia");
+            Country uk = new Country ("UK", "United Kingdom");
         
-        EmailAddress lukeEmail = new EmailAddress ("lskywalker@alliance.com");
-        Traveler travelerLuke = new Traveler ("Luke", "Skywalker", lukeEmail.getEmail());
-        Address lukeAddress = new Address ("125 Broadyway", "New York", usa);
-        travelerLuke.addAddress(lukeAddress);
-        System.out.println("Traveler @ getAddresses() = " + travelerLuke.getAddresses().size());
-      //  travelerRepository.save(travelerLuke);
-        
-        EmailAddress vaderEmail = new EmailAddress ("darthVader@empire.com");
-        Traveler travelerVader = new Traveler ("Darth", "Vader", vaderEmail.getEmail());
-        Address vaderAddress = new Address ("555 Death Star ln", "New York", usa);
-        travelerVader.addAddress(vaderAddress);
-        
-        EmailAddress chewyEmail = new EmailAddress ("chewbacca@alliance.com");
-        Traveler travelerChewy = new Traveler ("Chew", "bacca ", chewyEmail.getEmail());
-        Address chewyAddress = new Address ("6623 Delta Dr", "Texas", usa);
-        travelerChewy.addAddress(chewyAddress);
-        
-        EmailAddress obiWanEmail = new EmailAddress ("obiKenobi@JediAcademy.com");
-        Traveler travelerObiWan = new Traveler ("Obi-Wan ", "Kenobi", obiWanEmail.getEmail());
-        Address obiWanAddress = new Address ("7895 Yang Ching ln", "Hong Kong", China);
-        travelerObiWan.addAddress(obiWanAddress);
-        
-        //Create travelers in graphdb and add travelers to list
-        travelers.add(dataImpl.createTraveler(travelerLuke));
-        travelers.add(dataImpl.createTraveler(travelerVader));
-        travelers.add(dataImpl.createTraveler(travelerChewy));
-        travelers.add(dataImpl.createTraveler(travelerObiWan));
+            Traveler hanSolo = new Traveler ("Han", "Solo", "hanSolo@Rebels.com");
+            Address hanBillingAddress = new Address("27 Broadway", "Brooklyn, NY", usa);
+            Address hanShippingAddress = new Address("2250 Battery Park ln", "New York", usa);
+            addresses.add(hanBillingAddress);
+            addresses.add(hanShippingAddress);
+            FormOfPayment hanFop = new FormOfPayment("Visa", "5526-5584-8856-9985");
 
+            dataImpl.persistTravelertoDb(hanSolo, addresses, hanFop);
+            addresses.clear();
+            
+            Traveler chewy  = new Traveler ("Chew", "bacca", "Chewbacca@Rebels.com");
+            Address chewyBillingAddress = new Address("2525 Qualious ln.", "New York, NY", usa);
+            addresses.add(chewyBillingAddress);
+            FormOfPayment chewyFop = new FormOfPayment("Visa", "5524-5555-8888-9987");
+
+            dataImpl.persistTravelertoDb(chewy, addresses, chewyFop);         
+            addresses.clear();
+            
+            Traveler darthVader = new Traveler ("Darth", "Vader", "darthvader@Empire.com");
+            Address vaderBillingAddress = new Address("2215 Delta rd", "Bakersville, CA", usa);
+            Address vaderShippingAddress = new Address("2250 Delta rd", "Bakersville, CA", usa);
+            addresses.add(vaderBillingAddress);
+            addresses.add(vaderShippingAddress);
+            FormOfPayment vaderFop1 = new FormOfPayment("Visa", "3212-6698-8874-8852");
+
+            dataImpl.persistTravelertoDb(darthVader, addresses, vaderFop1);
+            addresses.clear();
         
-        return travelers;
+            Traveler obiWan = new Traveler ("Obi-Wan ", "Kenobi", "obiKenobi@JediAcademy.com");
+            Address obiWanBillingAddress = new Address("2258 tatooine pl.", "Tampa Bay, FL", usa);
+            Address obiWanShippingAddress = new Address("778545 Skyridge rd", "Tampa Bay, FL", usa);
+            addresses.add(obiWanBillingAddress);
+            addresses.add(obiWanShippingAddress);
+            FormOfPayment obiWanFop = new FormOfPayment("Discover", "7777-8888-9987-5412");
+            
+            dataImpl.persistTravelertoDb(obiWan, addresses, obiWanFop);
+            addresses.clear();
+            
+            Traveler luke = new Traveler ("Luke", "Skywalker", "skywalker@RebelAlliance.com");
+            Address lukeBillingAddress = new Address("2152 Sunnyville Wy.", "Denver, CO", usa);
+            Address lukeShippingAddress = new Address("PO Box 2254 Battery Park ln", "New York, NY", usa);
+            addresses.add(lukeBillingAddress);
+            addresses.add(lukeShippingAddress);
+            FormOfPayment lukeFop = new FormOfPayment("Visa", "2252-6646-5522-2222");
+
+            dataImpl.persistTravelertoDb(luke, addresses, lukeFop);
+            addresses.clear();
+            
+            Traveler peter = new Traveler ("Peter", "Parker", "Spiderman@webSlinging.com");
+            Address peterBillingAddress = new Address("85245 Queens rd.", "New York, NY", usa);
+            addresses.add(peterBillingAddress);
+            FormOfPayment peterFop = new FormOfPayment("American Express", "4444-5555-6666-9999");
+
+            dataImpl.persistTravelertoDb(peter, addresses, peterFop);
+            addresses.clear();
+            
+            Traveler bucky = new Traveler ("James", "Barnes", "wintersoldier@AIM.com");
+            Address buckyBillingAddress = new Address("4456 Gogolevskiy b-r", "Moscow", russia);
+            Address buckyShippingAddress = new Address("54123 Manezhnaya ul.", "Moscow", russia);
+            addresses.add(buckyBillingAddress);
+            addresses.add(buckyShippingAddress);
+            FormOfPayment buckyFop = new FormOfPayment("Visa", "5555-5555-5555-5555");
+
+            dataImpl.persistTravelertoDb(bucky, addresses, buckyFop);
+            addresses.clear();
+            
+            Traveler steve = new Traveler ("Steve", "Rogers", "captainAmerica@shield.com");
+            Address steveBillingAddress = new Address("55231 Marigold way", "Brooklyn, NY", usa);
+            Address steveShippingAddress = new Address("4421 Freedom lane", "Washington D.C.", usa);
+            addresses.add(steveBillingAddress);
+            addresses.add(steveShippingAddress);
+            FormOfPayment steveFop = new FormOfPayment("American Express Black", "9989-9632-5547-8521");
+
+            dataImpl.persistTravelertoDb(steve, addresses, steveFop);
+            addresses.clear();
+            
+            Traveler jackie = new Traveler ("Jacqueline", "Falsworth", "spitfire@earth-616.com");
+            Address jackieBillingAddress = new Address("22156 Charles St", "London", uk);
+            addresses.add(jackieBillingAddress);
+            FormOfPayment jackieFop = new FormOfPayment("Discover", "4456-5521-8878-9874");
+
+            dataImpl.persistTravelertoDb(jackie, addresses, jackieFop);
+            addresses.clear();
+            
+            long numOfTravelers = dataImpl.getNumberOfTravelers();
+            assertEquals(9,numOfTravelers);
     }
 }

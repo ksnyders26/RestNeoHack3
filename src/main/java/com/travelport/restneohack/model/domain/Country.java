@@ -17,6 +17,10 @@ public class Country {
     	return id;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public Country(String code, String name) {
         this.code = code;
         this.name = name;

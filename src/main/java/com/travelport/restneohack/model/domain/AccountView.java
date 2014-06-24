@@ -22,9 +22,9 @@ public class AccountView {
     private Address billingAddress;
     @RelatedTo
     private Address shippingAddress;
-    @RelatedToVia(type = "FOPS")
+    @RelatedToVia(type = "PAYMENT_TYPE")
     @Fetch
-    private Set<PaymentType> lineItems = new HashSet<PaymentType>();
+    private Set<PaymentType> paymentTypes = new HashSet<PaymentType>();
 
     public AccountView(Traveler traveler) {
         this.traveler = traveler;
@@ -33,10 +33,9 @@ public class AccountView {
     protected AccountView() {
     }
 
-    public void add(PaymentType lineItem) {
-        this.lineItems.add(lineItem);
+    public void add(PaymentType paymentType) {
+        this.paymentTypes.add(paymentType);
     }
-    // TODO JIRA setter was used when hydrating object from storage, don't use BeanWrapper
 
     public AccountView withBillingAddress(Address billingAddress) {
         Assert.state(traveler.hasAddress(billingAddress), "valid traveler address for " + traveler);
@@ -66,12 +65,12 @@ public class AccountView {
         return shippingAddress;
     }
 
-    public Set<PaymentType> getLineItems() {
-        return Collections.unmodifiableSet(lineItems);
+    public Set<PaymentType> getPaymentTypes() {
+        return Collections.unmodifiableSet(paymentTypes);
     }
 
-    public void add(FormOfPayment formOfPayment, int amount) {
-        add(new PaymentType(this, formOfPayment, amount));
+    public void add(FormOfPayment formOfPayment) {
+        add(new PaymentType(this, formOfPayment));
     }
 
     public String getName() {
