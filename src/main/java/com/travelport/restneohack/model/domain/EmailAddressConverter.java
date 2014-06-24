@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.travelport.restneohack.model.domain;
 
 
@@ -13,7 +7,6 @@ import java.util.Set;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.GenericConverter;
-import org.springframework.data.neo4j.annotation.NodeEntity;
 
 public class EmailAddressConverter implements GenericConverter {
     @Override
