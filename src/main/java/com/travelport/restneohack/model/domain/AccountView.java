@@ -12,66 +12,73 @@ import org.springframework.util.Assert;
 
 @NodeEntity
 public class AccountView {
-    
+
     @GraphId
     private Long id;
-
+    private String name;
     @RelatedTo
     private Traveler traveler;
     @RelatedTo
     private Address billingAddress;
     @RelatedTo
     private Address shippingAddress;
-
     @RelatedToVia(type = "FOPS")
     @Fetch
     private Set<PaymentType> lineItems = new HashSet<PaymentType>();
 
     public AccountView(Traveler traveler) {
-    	this.traveler = traveler;
+        this.traveler = traveler;
     }
 
     protected AccountView() {
-
     }
 
     public void add(PaymentType lineItem) {
         this.lineItems.add(lineItem);
     }
     // TODO JIRA setter was used when hydrating object from storage, don't use BeanWrapper
+
     public AccountView withBillingAddress(Address billingAddress) {
-        Assert.state(traveler.hasAddress(billingAddress),"valid traveler address for "+traveler);
+        Assert.state(traveler.hasAddress(billingAddress), "valid traveler address for " + traveler);
         this.billingAddress = billingAddress;
         return this;
     }
 
     public AccountView withShippingAddress(Address shippingAddress) {
-        Assert.state(traveler.hasAddress(shippingAddress),"valid traveler address for "+traveler);
+        Assert.state(traveler.hasAddress(shippingAddress), "valid traveler address for " + traveler);
         this.shippingAddress = shippingAddress;
         return this;
     }
-    
-        public Long getId() {
-            return id;
-        }
 
-        public Traveler getTraveler() {
-            return traveler;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public Address getBillingAddress() {
-		return billingAddress;
-	}
+    public Traveler getTraveler() {
+        return traveler;
+    }
 
-	public Address getShippingAddress() {
-		return shippingAddress;
-	}
+    public Address getBillingAddress() {
+        return billingAddress;
+    }
 
-	public Set<PaymentType> getLineItems() {
-		return Collections.unmodifiableSet(lineItems);
-	}
+    public Address getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public Set<PaymentType> getLineItems() {
+        return Collections.unmodifiableSet(lineItems);
+    }
 
     public void add(FormOfPayment formOfPayment, int amount) {
-        add(new PaymentType(this,formOfPayment,amount));
+        add(new PaymentType(this, formOfPayment, amount));
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

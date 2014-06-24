@@ -45,7 +45,7 @@
             <artifactId>junit</artifactId>
             <version>4.11</version>
             <scope>test</scope>
-        </dependency>
+        </dependency>   
 
         <dependency>
             <groupId>org.springframework</groupId>
@@ -67,7 +67,7 @@
             <artifactId>spring-test</artifactId>
             <version>${spring.version}</version>
             <scope>test</scope>
-        </dependency>
+        </dependency>  
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -114,6 +114,11 @@
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
+
+        
+       
+
+
         <!-- Hibernate implementation of the JSR-303 Bean Validation Spec API.
         (SDN makes use of the javax.validation:validation-api dependency and
         hibernate provides a concrete implementation -->
