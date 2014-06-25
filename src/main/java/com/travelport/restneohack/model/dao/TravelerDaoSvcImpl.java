@@ -2,12 +2,11 @@ package com.travelport.restneohack.model.dao;
 
 
 import com.travelport.restneohack.model.domain.Account;
-import java.util.Iterator;
+import com.travelport.restneohack.model.domain.AccountView;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.travelport.restneohack.model.domain.AccountView;
 import com.travelport.restneohack.model.domain.Address;
 import com.travelport.restneohack.model.domain.FormOfPayment;
 import com.travelport.restneohack.model.domain.Traveler;
@@ -43,7 +42,7 @@ public class TravelerDaoSvcImpl {
     }
     
     public Traveler addAccount(Account account, Traveler traveler){
-        traveler.setAccount(account);
+        traveler.addAccount(account);
         return travelerRepository.save(traveler);
     }
                 
@@ -73,33 +72,34 @@ public class TravelerDaoSvcImpl {
 		return travelerRepository.count();
 	}
     
+    public void persistAccountView(AccountView accountView) {
+        template.save(accountView);
+    }
     
-    public void persistTravelertoDb(Traveler traveler, Set<Address> addresses, FormOfPayment fop) {
+    public void persistTravelertoDb(Traveler traveler, Set<Address> addresses, Set<FormOfPayment> formsOfPayment) {
         
-        
-        Traveler persistTraveler = new Traveler();
-        
+   
         
         for (Address travelerAddress: addresses){
-       
             traveler.addAddress(travelerAddress);
         }
 
-     //   System.out.println("traveler addresses = " + persistTraveler.getAddresses().);
-        persistTraveler = template.save(traveler);
         
-        template.save(fop);
         
-        AccountView accountView = new AccountView(persistTraveler);
-        //accountView.setName(null);
-        accountView.add(fop);
+        for (FormOfPayment fop: formsOfPayment) {
+            traveler.addFormOfPayment(fop);
+            //template.save(fop);
+        }
+        template.save(traveler);
         
-        Iterator iter = addresses.iterator();
-        Object address = iter.next();
-        System.out.println("billing address = " + address.toString());
-//        accountView.withBillingAddress((Address) address);
         
-        template.save(accountView);
+//        AccountView accountView = new AccountView(traveler);
+//        //accountView.setName(null);
+//        accountView.add;
+        
+ 
+        
+//        template.save(accountView);
         
        //find addresses from db and serialize to shipping/billing address 
 

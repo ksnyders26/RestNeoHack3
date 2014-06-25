@@ -18,7 +18,7 @@ public class FormOfPayment {
 
     @GraphId
     private Long id;
-    @Indexed(unique = true)
+//    @Indexed(unique = true)
     private String name;
     @Indexed(indexType = IndexType.FULLTEXT, indexName = "formOfPayment_search")
     private String description;

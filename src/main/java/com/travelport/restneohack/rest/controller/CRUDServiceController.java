@@ -41,7 +41,7 @@ public class CRUDServiceController {
 
         account.setId(String.valueOf(accountDB.getId()));
 
-        System.out.println("Account email  = " + accountDB.getEmailAddress());
+//        System.out.println("Account email  = " + accountDB.getEmailAddress());
         return account;
     }
 
@@ -90,13 +90,13 @@ public class CRUDServiceController {
         }
         if (trv.getAccount() != null){
             Long idLong = Long.valueOf(trv.getAccount());
-            traveler.setAccount(actDaoImpl.findAccountById(idLong));
+            traveler.addAccount(actDaoImpl.findAccountById(idLong));
         }
         Traveler travelerDB = trvDaoImpl.createTraveler(traveler);
       
         trv.setId(String.valueOf(travelerDB.getId()));
 
-        System.out.println("Traveler email  = " + travelerDB.getEmailAddress());
+//        System.out.println("Traveler email  = " + travelerDB.getEmailAddress());
         return trv;
     }
 

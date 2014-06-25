@@ -11,97 +11,114 @@ import org.springframework.util.Assert;
 
 @NodeEntity
 public class Traveler {
-    
-        private final static String HAS_ADDRESS = "ADDRESS";
 
-        private final static String HAS_ACCOUNT = "ACCOUNT";
-        
-	private String firstName, lastName;
-        
-        @GraphId
-        private Long id;
+    private final static String HAS_ADDRESS = "ADDRESS";
 
-	@Indexed(unique = true)
-	private String emailAddress;
-        
-        @Fetch
-	@RelatedTo(elementClass = Address.class, type = HAS_ADDRESS)
-	private Set<Address> addresses = new HashSet<Address>();
-       // private Set<Address> addresses = new HashSet<Address>();
+    private final static String HAS_ACCOUNT = "ACCOUNT";
 
-    
+    private final static String HAS_FOP = "FOP";
 
-        @Fetch
-	@RelatedTo(elementClass = Account.class, type = HAS_ACCOUNT)
-        private Account account;
-        
-        public Traveler() {
+    private String firstName, lastName;
 
-	}
-        
-        public Long getId() {
-            return id;
-        }
-	public Traveler(String firstName, String lastName, String emailAddress) {
+    @GraphId
+    private Long id;
 
-                Assert.hasText(firstName);
-		Assert.hasText(lastName);
-		Assert.hasText(emailAddress);
+    @Indexed(unique = true)
+    private String emailAddress;
 
-		this.firstName = firstName;
-		this.lastName = lastName;
-                this.emailAddress = emailAddress;
-	}
+    @Fetch
+    @RelatedTo(elementClass = Address.class, type = HAS_ADDRESS)
+    private Set<Address> addresses = new HashSet<Address>();
 
-	public String getFirstName() {
-		return firstName;
-	}
+    @Fetch
+    @RelatedTo(elementClass = FormOfPayment.class, type = HAS_FOP)
+    private Set<FormOfPayment> formsOfPayment = new HashSet<FormOfPayment>();
 
-	public String getLastName() {
-		return lastName;
-	}
+    @Fetch
+    @RelatedTo(elementClass = Account.class, type = HAS_ACCOUNT)
+    private Set<Account> accounts = new HashSet<Account>();
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    public Traveler() {
 
-	public String getEmailAddress() {
-		return emailAddress;
-	}
+    }
 
-	public void setEmailAddress(String emailAddress) {
-		this.emailAddress = emailAddress;
-	}
+    public Long getId() {
+        return id;
+    }
 
-        public void addAddress(Address address) {
-		addresses.add(address);
-	}
-        
-	public Set<Address> getAddresses() {
-            return addresses;
-	//	return Collections.unmodifiableSet(addresses);
-	}
+    public Traveler(String firstName, String lastName, String emailAddress) {
 
-        public boolean hasAddress(Address address) {
-            return addresses.contains(address);
-        }
+        Assert.hasText(firstName);
+        Assert.hasText(lastName);
+        Assert.hasText(emailAddress);
 
-        public Account getAccount() {
-            return account;
-        }
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.emailAddress = emailAddress;
+    }
 
-        public void setAccount(Account account) {
-            this.account = account;
-        }
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
+    public void addAddress(Address address) {
+        addresses.add(address);
+    }
+
+    public Set<Address> getAddresses() {
+        return addresses;
+        //	return Collections.unmodifiableSet(addresses);
+    }
+
+    public boolean hasAddress(Address address) {
+        return addresses.contains(address);
+    }
+
+    public void addFormOfPayment(FormOfPayment formOfPayment) {
+        formsOfPayment.add(formOfPayment);
+    }
+
+    public Set<FormOfPayment> getFormOfPaymentes() {
+        return formsOfPayment;
+        //	return Collections.unmodifiableSet(formsOfPayment);
+    }
+
+    public boolean hasFormOfPayment(FormOfPayment formOfPayment) {
+        return formsOfPayment.contains(formOfPayment);
+    }
+
+    public void addAccount(Account account) {
+        accounts.add(account);
+    }
+
+    public Set<Account> getAccountes() {
+        return accounts;
+        //	return Collections.unmodifiableSet(accountes);
+    }
+
+    public boolean hasAccount(Account account) {
+        return accounts.contains(account);
+    }
+
     @Override
     public String toString() {
-        //return String.format("%s %s <%s>",firstName,lastName,emailAddress);
-        for (Address s : addresses){
-            System.out.println(s);
-        }
-        return String.format("%s %s <%s>",firstName,lastName,emailAddress);
+    
+        return String.format("%s %s <%s>", firstName, lastName, emailAddress);
     }
 }
-
-    
-
