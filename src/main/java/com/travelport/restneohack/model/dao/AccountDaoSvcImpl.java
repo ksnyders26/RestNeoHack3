@@ -38,6 +38,12 @@ public class AccountDaoSvcImpl {
             
     }
     
+    public Account updateAccount(Account account){
+		account = accountRepository.save(account);
+        return account;
+    }
+    
+    
     public Account findOne(Long id){
         return accountRepository.findOne(id);
     }

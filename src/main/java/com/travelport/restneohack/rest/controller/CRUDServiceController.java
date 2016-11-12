@@ -36,11 +36,14 @@ public class CRUDServiceController {
         if (account == null) {
             throw new RuntimeException("Request cannot be empty");
         }
-
-        Account accountDB = actDaoImpl.createAccount(new Account(account.getName(), account.getEmail()));
-
-        account.setId(String.valueOf(accountDB.getId()));
-
+        
+        if (account.getId() == null) {
+	        Account accountDB = actDaoImpl.createAccount(new Account(account.getName(), account.getEmail()));
+	        account.setId(String.valueOf(accountDB.getId()));
+        }
+        else {
+        	Account accountDB = actDaoImpl.updateAccount(new Account(account.getName(), account.getEmail()));
+        }
 //        System.out.println("Account email  = " + accountDB.getEmailAddress());
         return account;
     }
@@ -69,28 +72,57 @@ public class CRUDServiceController {
     @ResponseStatus(value = HttpStatus.ACCEPTED)
     @ResponseBody
     public TravelerJSON storeRecord(@RequestBody TravelerJSON trv) throws Throwable {
+        boolean update = false;
         if (trv == null) {
             throw new RuntimeException("Request cannot be empty");
         }
 
-        Traveler traveler = new Traveler(trv.getFirstName(), trv.getLastName(), trv.getEmail());
+        Traveler traveler = null;
+        if (trv.getId() != null) {
+        	update = true;
+        	Long idLong;
+			try {
+				idLong = Long.valueOf(trv.getId());
+			} catch (Exception e) {				
+				e.printStackTrace();
+				throw new Exception("ID must be numeric");
+			}
+        	traveler =  trvDaoImpl.findTravelerById(idLong);
+        }
+        else {
+        	traveler = new Traveler(trv.getFirstName(), trv.getLastName(), trv.getEmail());
+        }
+        
           if (trv.getStreet() != null) {
             String street = trv.getStreet();
             String city = trv.getCity();
             String countryStr = trv.getCountry();
-            Country country = null;
+            
+            Country newCountry = null;
             if ((countryStr!= null) && (countryStr.equals("SP"))) {
-                country = new Country("SP", "Spain");
+            	newCountry = new Country("SP", "Spain");
             }
             else {
-                country = new Country("US", "United Stats of America");
+            	newCountry = new Country("US", "United Stats of America");
+            }
+            Country country = new Country();
+            // get existing country from DB??
+            if (newCountry != null) {
+            	country = newCountry;
             }
             Address addr = new Address(street, city, country);
             traveler.addAddress(addr);
         }
         if (trv.getAccount() != null){
-            Long idLong = Long.valueOf(trv.getAccount());
-            traveler.addAccount(actDaoImpl.findAccountById(idLong));
+
+            try {
+				Long idLong = Long.valueOf(trv.getAccount());  
+				traveler.addAccount(actDaoImpl.findAccountById(idLong));
+			} catch (Exception e) {
+				//log - kathie
+				e.printStackTrace();
+			}
+
         }
         Traveler travelerDB = trvDaoImpl.createTraveler(traveler);
       
