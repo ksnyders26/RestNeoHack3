@@ -104,4 +104,8 @@ public class TravelerDaoSvcImpl {
        //find addresses from db and serialize to shipping/billing address 
 
     }
+
+	public Traveler updateTraveler(Traveler traveler) {
+		return travelerRepository.save(traveler);
+	}
 }

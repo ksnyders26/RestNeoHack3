@@ -124,7 +124,15 @@ public class CRUDServiceController {
 			}
 
         }
-        Traveler travelerDB = trvDaoImpl.createTraveler(traveler);
+        
+        Traveler travelerDB = null;
+        if (!update) {
+        	travelerDB = trvDaoImpl.createTraveler(traveler);
+        }
+        else {
+        	travelerDB = trvDaoImpl.updateTraveler(traveler);
+        }
+        	
       
         trv.setId(String.valueOf(travelerDB.getId()));
 
